@@ -106,4 +106,28 @@ public:
         }
         return false;
     }
+    friend std::ostream &operator<<(std::ostream &os, const Node* n){
+        os << "Node key--> " << n->data;
+        if (n->lchild == nullptr)
+        {
+            os << "\nNode left-child key--> NULL";
+        }
+        else{
+            os << "\nNode left-child key--> " << n->lchild->data;
+        }
+        if (n->rchild == nullptr)
+        {
+            os << "\nNode right-child key--> NULL";
+        }
+        else{
+            os << "\nNode right-child key--> " << n->rchild->data;
+        }
+        return os;
+    }
+    friend std::istream &operator>>(std::istream &is, Node* n){
+        is >> n->data;
+        n->lchild = nullptr;
+        n->rchild = nullptr;
+        return is;
+    }
 };
