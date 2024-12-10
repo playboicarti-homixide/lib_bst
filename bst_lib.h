@@ -39,6 +39,22 @@ public:
         std::cout << this->data << ", ";
         this->rchild->inOrder();
     }
+    void preOrder(){
+        if (this == nullptr) {
+            return;
+        }
+        std::cout << this->data << ", ";
+        this->lchild->inOrder();
+        this->rchild->inOrder();
+    }
+    void postOrder(){
+        if (this == nullptr) {
+            return;
+        }
+        this->lchild->inOrder();
+        this->rchild->inOrder();
+        std::cout << this->data << ", ";
+    }
     bool searchR(int k){
         if (this == nullptr) {
             return false;
@@ -106,6 +122,62 @@ public:
         }
         return false;
     }
+    
+    Node* deleteNode(int k){
+        Node* parent_node = nullptr;
+        Node* current_node = this;
+        while (1){
+            if (current_node->data > k) {
+                parent_node = current_node;
+                current_node = current_node->lchild;
+                
+            }
+            else if (current_node->data < k) {
+                parent_node = current_node;
+                current_node = current_node->rchild;
+            }
+            else {
+                if (current_node->lchild == nullptr && current_node->rchild == nullptr) {
+                    delete current_node;
+                    if (k < parent_node->data) {
+                        parent_node->lchild = nullptr;
+                        return this;
+                    }
+                    else{
+                        parent_node->rchild = nullptr;
+                        return this;
+                    }
+                }
+                else{
+                    if (k < parent_node->data) {
+                        if (current_node->lchild != nullptr) {
+                            parent_node->lchild = current_node->lchild;
+                            delete current_node;
+                            return this;
+                        }
+                        else {
+                            parent_node->lchild = current_node->rchild;
+                            delete current_node;
+                            return this;
+                        }
+                    }
+                    else{
+                        if (current_node->rchild != nullptr) {
+                            parent_node->rchild = current_node->rchild;
+                            delete current_node;
+                            return this;
+                        }
+                        else {
+                            parent_node->rchild = current_node->lchild;
+                            delete current_node;
+                            return this;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     friend std::ostream &operator<<(std::ostream &os, const Node* n){
         os << "Node key--> " << n->data;
         if (n->lchild == nullptr)
